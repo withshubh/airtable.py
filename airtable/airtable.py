@@ -55,7 +55,7 @@ class AirtableError(Exception):
         return self.message or self.__class__.__name__
 
 
-class Airtable(object):
+class Airtable():
     def __init__(self, base_id, api_key, dict_class=OrderedDict):
         """Create a client to connect to an Airtable Base.
 
@@ -177,7 +177,7 @@ class Airtable(object):
         return Table(self, table_name)
 
 
-class Table(object):
+class Table():
     def __init__(self, base_id, table_name, api_key=None, dict_class=OrderedDict):
         """Create a client to connect to an Airtable Table.
 
