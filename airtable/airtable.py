@@ -90,7 +90,9 @@ class Airtable(object):
 
     def get(
             self, table_name, record_id=None, limit=0, offset=None,
-            filter_by_formula=None, view=None, max_records=0, fields=[]):
+            filter_by_formula=None, view=None, max_records=0, fields=None):
+        if fields is None:
+            fields = []
         params = {}
         if check_string(record_id):
             url = posixpath.join(table_name, record_id)
@@ -115,7 +117,7 @@ class Airtable(object):
 
     def iterate(
             self, table_name, batch_size=0, filter_by_formula=None,
-            view=None, max_records=0, fields=[]):
+            view=None, max_records=0, fields=None):
         """Iterate over all records of a table.
 
         Args:
@@ -136,6 +138,8 @@ class Airtable(object):
             A dict for each record containing at least three fields: "id",
             "createdTime" and "fields".
         """
+        if fields is None:
+            fields = []
         offset = None
         while True:
             response = self.get(
@@ -198,13 +202,17 @@ class Table(object):
 
     def get(
             self, record_id=None, limit=0, offset=None,
-            filter_by_formula=None, view=None, max_records=0, fields=[]):
+            filter_by_formula=None, view=None, max_records=0, fields=None):
+        if fields is None:
+            fields = []
         return self._client.get(
             self.table_name, record_id, limit, offset, filter_by_formula, view, max_records, fields)
 
     def iterate(
             self, batch_size=0, filter_by_formula=None,
-            view=None, max_records=0, fields=[]):
+            view=None, max_records=0, fields=None):
+        if fields is None:
+            fields = []
         return self._client.iterate(
             self.table_name, batch_size, filter_by_formula, view, max_records, fields)
 
