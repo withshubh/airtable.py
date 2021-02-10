@@ -19,7 +19,7 @@ class IsNotString(Exception):
 def check_integer(n):
     if not n:
         return False
-    elif not isinstance(n, six.integer_types):
+    if not isinstance(n, six.integer_types):
         raise IsNotInteger('Expected an integer', n)
     else:
         return True
@@ -28,7 +28,7 @@ def check_integer(n):
 def check_string(s):
     if not s:
         return False
-    elif not isinstance(s, six.string_types):
+    if not isinstance(s, six.string_types):
         raise IsNotString('Expected a string', s)
     else:
         return True
@@ -82,11 +82,10 @@ class Airtable():
                              headers=self.headers)
         if r.status_code == requests.codes.ok:
             return r.json(object_pairs_hook=self._dict_class)
-        else:
-            error_json = r.json().get('error', {})
-            raise AirtableError(
-                error_type=error_json.get('type', str(r.status_code)),
-                message=error_json.get('message', json.dumps(r.json())))
+        error_json = r.json().get('error', {})
+        raise AirtableError(
+            error_type=error_json.get('type', str(r.status_code)),
+            message=error_json.get('message', json.dumps(r.json())))
 
     def get(
             self, table_name, record_id=None, limit=0, offset=None,
